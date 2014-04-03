@@ -1,7 +1,7 @@
 ---
 title: 'Lab 1: Gene expression microarrays and differential expression'
 author: "Jean-Philippe Fortin"
-date: "March 25, 2014"
+date: "April 3, 2014"
 output: ioslides_presentation
 ---
 
@@ -20,23 +20,25 @@ First let's load the **affy** and **affydata** packages from Bioconductor:
 library(affy)
 library(affydata)
 ```
-To load into R a dataset containing 4 Affymetrix samples:
+We will use a dataset containing 4 Affymetrix samples:
 ```{r}
 data(Dilution)
 pData(Dilution) #Phenotype information
 ```
 
 ## Raw intensities
-Remember that most of the Affymetrix arrays contain two intensities for each probe: one for perfect match **(PM)** and one for mismatch **(MM)**. We will only work with PM intensities
-```{r}
+The loaded Affymetrix arrays contain two intensities for each probe: one for perfect match **(PM)** and one for mismatch **(MM)**. We will only work with PM intensities.
+```{r, message=FALSE, warning=FALSE}
 # To obtain the matrix of PM intensities:
 raw <- pm(Dilution)
-head(raw, n=3)
+head(raw, n=4)
 ```
+Columns are samples, rows are probes
 
 
 
 ## Log-Intensities densities
+Let's plot the density of the log intensities for each sample:
 ```{r, echo=FALSE}
 library(RColorBrewer) # Optional
 palette(brewer.pal(8,"Set1"))
@@ -49,15 +51,16 @@ for (i in 2:4){lines(density(log.raw[,i]),col=i, lwd=3)}
 ```
 
 ## Log-Intensities Sample 1 vs Sample 2
+How do the intensities of Sample 1 compare to the intensities of Sample 2?
 ```{r}
 plot(log.raw[,1], log.raw[,2], pch=20, cex=0.5)
-abline(a=0,b=1,col="deepskyblue3", lwd=4)
+abline(a=0,b=1,col="deepskyblue3", lwd=4) # Draw the blue line
 ```
 
 ## MA plot (Bland–Altman plot)
 ```{r}
-avg  <- (log.raw[,1] + log.raw[,2])/2
-diff <-  log.raw[,1] - log.raw[,2]
+avg  <- (log.raw[,1] + log.raw[,2])/2 # Average
+diff <-  log.raw[,1] - log.raw[,2] # Difference
 plot(avg, diff, pch=20, cex=0.5)
 abline(h=0,col="deepskyblue3", lwd=4)
 ```
@@ -79,6 +82,8 @@ lines(lowess.curve, col = "deeppink3", lwd = 4)
 
 ## Quantile normalization
 ```{r}
+# I usually use the quantile normalization implemented
+# in the package preprocessCore
 qn <- preprocessCore::normalize.quantiles(log.raw)
 
 plot(density(qn[,1]), ylim=c(0,1), xlab="",main="", lwd=3)
@@ -94,7 +99,7 @@ abline(h=0,col="deepskyblue3", lwd=4)
 lowess.curve <- lowess(x = avg, y = diff, f = 0.05)
 lines(lowess.curve, col = "deeppink3", lwd = 4)
 ```
-
+The lowess curve overlaps the 0 line 
 ## Exercise 1
 
 - Read about loess/lowess normalization. 
@@ -103,12 +108,13 @@ lines(lowess.curve, col = "deeppink3", lwd = 4)
 
 
 ## Scatterplot smoothing
+
 ```{r, echo=FALSE}
 avg  <- (log.raw[,1] + log.raw[,2])/2
 diff <-  log.raw[,1] - log.raw[,2]
 lowess.curve <- lowess(x = avg, y = diff, f = 0.05)
 ```
-
+The function **smoothScatter** can be used to smooth the scatter plot:
 ```{r, warning=FALSE,message=FALSE}
 smoothScatter(avg, diff, ylim = c(-2,2))
 lines(lowess.curve, col = "deeppink3", lwd = 3)
@@ -141,7 +147,7 @@ head(x, n=3)
 Can you obtain the median polished intensities for the first probeset ? (look at the class notes to see an example of the median polish algorithm)
 
 ## RMA
-RMA performs background correction, quantile normalization and applies the median polish algorithm to summarize the probeset intensities. Only need one command:
+RMA (Robust Multi-array Average) performs background correction, quantile normalization and applies the median polish algorithm to summarize the probeset intensities. Very simple command: 
 ```{r}
 eset <- rma(Dilution)
 nrow(eset)
@@ -162,17 +168,26 @@ dim(e)
 ```
 
 ## Affy diagnostic plots
-The **affy** package contains plot commands to draw boxplots, densities and MA plots
+The **affy** package contains convenient plot commands to draw boxplots, densities and MA plots.
 ```{r, eval=FALSE}
 boxplot(Dilution)
 hist(Dilution)
 MAplot(Dilution, pairs=TRUE)
 MAplot(Dilution, pairs=TRUE, plot.method="smoothScatter")
 ```
-We are now ready to perform a differential expression analysis. 
+
+## Boxplots
+```{r}
+boxplot(Dilution)
+```
+
+## MAplots
+```{r, warning=FALSE, message=FALSE}
+MAplot(Dilution, pairs=TRUE, plot.method="smoothScatter")
+```
 
 ## Differential analysis with limma
-**Goal:** Find genes that have significantly significant different abundances between two (or more) groups. Our dataset only has 4 samples, with no interesting biological treatment group, but we will use it for demonstration purpose. We will use the package **limma**:
+**Goal:** Find genes that have statistically significant different abundances between two (or more) groups. Our dataset only has 4 samples, with no interesting biological treatment group, but we will use it for demonstration purpose. We will use the package **limma**:
 ```{r, warning=FALSE, message=FALSE}
 library(limma)
 ```
@@ -182,8 +197,11 @@ pd <- pData(Dilution)
 groups <- as.factor(pd$liver)
 ```
 
+## Linear model
+For each gene, we want to fit the model $$y_{i} = \beta_0 + \beta_1 x_i$$ where $y_i$ is the expression value for sample $i$, $\beta_0$ is an intercept, $x_i$ is a dummy variable equal to 0 for the first group and 1 for the second group, and $\beta_1$ is the coefficient associated with the change in expression between the two groups. Our goal is to test whether or not $\beta_1 = 0$. 
+
 ## DE Analysis
-We need to construct a design matrix:
+First, we need to construct a design matrix:
 ```{r}
 design.matrix <- model.matrix(~groups)
 colnames(design.matrix) <- c("Intercept","Treatment")
@@ -192,11 +210,11 @@ design.matrix
 
 
 ## Linear model
-We fit a linear model using the **lmFit** function in **limma**. All we need is an expression matrix containing the summarized intensities and a design matrix.
+We can fit the linear models using the **lmFit** function in **limma**. All we need is an expression matrix containing the summarized intensities and the design matrix:
 ```{r}
-fit <- lmFit(e, design.matrix)
+fit <- lmFit(object = e, design = design.matrix)
 ```
-**fit** is an object containing the results of the fits. For instance, one can retrieve the coefficients of the linear model by
+**fit** is an object containing the results of the fits. For instance, one can retrieve the coefficients of the linear model with
 ```{r}
 head(fit$coefficients)
 ```
@@ -215,27 +233,55 @@ t <- (beta*sqrt(n))/s
 Can you extract the p-value for each gene?
 
 ## Empirical Bayes
-Computing classical t-statistics for experiments with a small number of arrays is unstable. The Empirical Bayes method implemented in **limma** borrows information across genes to make the analysis more stable.The function **eBayes** computes moderated t-statistics by estimating the standard errors using empirical Bayes moderation: 
+Computing classical t-statistics for experiments with a small number of arrays is unstable. The Empirical Bayes method implemented in **limma** borrows information across genes to make the analysis more stable. Precisely, the function **eBayes** computes moderated t-statistics by estimating the standard errors using empirical Bayes moderation. 
 ```{r}
 fit2 <- eBayes(fit)
+names(fit2)
+```
+
+## P-values histogram
+Let's create a histogram of the p-values:
+```{r}
+hist(fit2$p.value[,2])
 ```
 
 ## Volcano plot
+A **volcano plot** is used to plot significance (e.g.instance p-value) versus fold-change (e.g. diff. expression coefficient). For our dataset, one can produce a volcano plot as follows:
 ```{r}
-volcanoplot(fit2, coef=2)
+p <- fit2$p.value[,2]
+plot(fit2$coefficients[,2], -log2(p), pch=20, cex=0.3)
 ```
+
+## Volcano plot
+**limma** has a command to produce a volcano plot on a fitted object produced by the  **eBayes** command:
+```{r}
+volcanoplot(fit2, coef=2) 
+```
+
+## Volcano plots
+
+- Why did we use the negative logarithm of the p-values instead of the raw p-values?
+- The two previous volcano plots look very similar, but are different. Why is that? Type in **?volcanoplot** in the R console to get information about what **volcanoplot** does. 
 
 ## Multiple comparison
+- The command **p.adjust()** returns adjusted p-values for different methods. (see **?p.adjust**)
+- For instance, to correct for Family-Wise Error Rate (FWER), one can use Bonferroni correction:
+```{r}
+b.pvalues <- p.adjust(p, method = "bonferroni" )
+```
+- To correct for False Discovery Rate (FDR), one can use the Benjamini-Hochberg correction method:
+```{r}
+fdr.pvalues <- p.adjust(p, method = "fdr")
+summary(fdr.pvalues)
+```
 
 ## Exercise 3
-- Repeat the differential expression analysis, but this time testing for the difference between samples from scanner 1 and samples from scanner 2 (see phenotype information)
-- Produce a p-values (computed with **eBayes**) histogram 
-- Repeat the analysis but this time with data that haven't been background corrected and that are not normalized. Use the median polish algorithm for the probeset summarization. Use the function **expresso()** in the **affy** package to produce such an expression matrix. 
-- What can you tell about the p-values produced with the RMA-corrected dataset? What can you tell about the p-values produced with the uncorrected data? 
-```{r}
-```
-## To do:
-- Background subtraction
+- Repeat the differential expression analysis, but this time testing for the difference between samples from scanner 1 and samples from scanner 2 (see phenotype information with **pData(Dilution)**). Use RMA to process the data. 
+- Produce a histogram of the p-values (computed with **eBayes**)
+- Repeat the analysis but this time with data that haven't been background corrected and that are not normalized. Use the median polish algorithm for the probeset summarization. Use the function **expresso()** in the **affy** package to produce the expression matrix. 
+- What can you tell about the p-values produced with the RMA-corrected dataset? What can you tell about the p-values produced with the uncorrected data?
+
+
 
 
 
