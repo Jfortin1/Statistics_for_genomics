@@ -100,6 +100,7 @@ lowess.curve <- lowess(x = avg, y = diff, f = 0.05)
 lines(lowess.curve, col = "deeppink3", lwd = 4)
 ```
 The lowess curve overlaps the 0 line 
+
 ## Exercise 1
 
 - Read about loess/lowess normalization. 
