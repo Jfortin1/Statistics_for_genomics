@@ -233,7 +233,7 @@ $$ t = \frac{\hat{\beta_1}}{\frac{s}{\sqrt{n}}}$$
 ## Classical t-statistic
 How can we obtain the t-statistics from the object returned by **lmFit()**?
 ```{r}
-beta <- fit$coefficient[,2]
+beta <- fit$coefficients[,2]
 s <- fit$stdev.unscaled[,2]
 n <- 4
 t <- (beta*sqrt(n))/s
