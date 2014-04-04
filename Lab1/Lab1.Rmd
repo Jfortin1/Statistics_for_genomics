@@ -122,6 +122,13 @@ lines(lowess.curve, col = "deeppink3", lwd = 3)
 abline(h=0, col = "deepskyblue3", lwd=3)
 ```
 
+## Transparency 
+```{r}
+library(scales)
+plot( avg, diff, pch = 20, cex = 0.5, col = alpha("black", 0.1))
+lines(lowess.curve, col = "deeppink3", lwd = 3)
+```
+
 ## Probe sets
 A set of probes targeting the same gene is called a **probeset**. First, let's get the probe name for each row of the PM (or MM) matrix:
 ```{r}
