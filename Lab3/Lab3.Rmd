@@ -1,0 +1,70 @@
+---
+title: "Lab 3: Creating a table of the DE genes"
+author: "Jean-Philippe Fortin"
+date: "April 15, 2014"
+output: ioslides_presentation
+---
+
+## Goal
+This tutorial is about how to get a table with your differentially expressed genes. First, let's load the data and run **limma** for differential expression with respect to the scanner group: 
+```{r, warning=FALSE, message=FALSE, results="hide"}
+library(affy)
+library(affydata)
+library(limma)
+data(Dilution)
+e <- exprs(rma(Dilution))
+groups <- as.factor(pData(Dilution)$scanner)
+design.matrix <- model.matrix(~groups)
+colnames(design.matrix) <- c("Intercept","Treatment")
+fit2 <- eBayes(lmFit(e, design = design.matrix))
+```
+
+## topTable function in limma
+The function **topTable** is really useful to return the top differentially expressed genes. For instance, to return the top 100 genes that pass an uncorrected p-value threshold of 0.05, one can use
+```{r}
+table <- topTable(fit2,coef = 2, adjust.method="none", 
+                  p.value = 0.05, number=100)
+head(table, n=3)
+```
+**coef=2** means that we are interested in the second coefficient of our design matrix, i.e. the treatment effect.
+
+## Annotation package
+We are not totally happy: we still don't have the genomic information of these probesets, only probeset IDs. We need to map these probesets to genes. We need first to load the annotation package containing the relevant information for this affymetrix array: 
+```{r, warning=FALSE, message=FALSE}
+library("hgu95av2.db")
+columns(hgu95av2.db) # To see the info stored in the annotation
+```
+
+## Find gene names
+To find the gene symbol corresponding to the top 100 genes, one can do the following:
+```{r, warning=FALSE, message=FALSE}
+probeNames <- rownames(table) # Names of the top 100 probes
+info <- select(hgu95av2.db, probeNames, c("SYMBOL"), "PROBEID")
+head(info, n=3)
+dim(info)
+```
+Wait, we had 100 probes, and now we have 104 gene symbols. What's wrong?
+
+## Find gene names
+It seems that some probesets map to more than one gene:
+```{r, warning=FALSE, message=FALSE}
+table(table(info[,1]))
+```
+97 probesets map to 1 gene, 2 probesets map to 2 genes and 1 probeset maps to 3 genes. Let's use only the first gene mapped for each probeset:
+```{r}
+info <- info[match(probeNames, info$PROBEID),]
+dim(info)
+```
+(One could also decide to remove these probesets, or to do something else)
+
+## Conclusion
+```{r, warning=FALSE, message=FALSE}
+table <- cbind(table, info$SYMBOL)
+head(table, n=3)
+```
+**hgu95av2.db** contains much more information than the gene symbol; please explore the other columns by changing **"SYMBOL"** by another column name in  
+```{r, eval=FALSE}
+select(hgu95av2.db, probeNames, c("SYMBOL"), "PROBEID")
+```
+
+
