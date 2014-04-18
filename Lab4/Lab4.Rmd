@@ -1,0 +1,138 @@
+---
+title: "Lab 4: Heatmaps, Clustering and PCA"
+author: "Jean-Philippe Fortin"
+date: "April 15, 2014"
+output: ioslides_presentation
+---
+
+## Extract data
+If you would like to know the processing dates of your samples, try to use the following function from**affy**:
+```{r, eval=FALSE}
+protocolData(yourAffyBatchObject)$ScanDate
+```
+where **yourAffyBatchObject** is the affybatch object containing your samples. 
+
+## Preambule
+Let's load the data:
+```{r, warning=FALSE, message=FALSE, results="hide"}
+library(affy)
+library(affydata)
+library(limma)
+library("hgu95av2.db")
+data(Dilution)
+e <- exprs(rma(Dilution))
+groups <- as.factor(pData(Dilution)$scanner)
+design.matrix <- model.matrix(~groups)
+colnames(design.matrix) <- c("Intercept","Treatment")
+fit2 <- eBayes(lmFit(e, design = design.matrix))
+```
+
+## Add gene names:
+let's get a table of the top 100 genes that pass an uncorrected p-value threshold of 0.05:
+```{r, warning=FALSE, message=FALSE}
+table <- topTable(fit2,coef = 2, adjust.method="none", 
+                  p.value = 0.05, number=100)
+probeNames <- rownames(table) # Names of the top 100 probes
+info <- select(hgu95av2.db, probeNames, c("SYMBOL"), "PROBEID")
+info <- info[match(probeNames, info$PROBEID),] # Only first gene mapped
+table <- cbind(table, info$SYMBOL)
+head(table, n=3)
+```
+
+## Heatmap
+I really like the heatmap function **heatmap.2** in the package **gplots**
+```{r, message= FALSE, warning = FALSE}
+library(gplots)
+```
+Let's create a heatmap for the top 100 genes that we found differentially expressed between scanner 1 and scanner 2. We need first to subset the matrix of intensities in order to contain only those genes:
+```{r}
+top.e <- e[match(rownames(table), rownames(e)),] ## or 
+# top.e <- e[rownames(table),]
+```
+and we want to substract the mean for each row:
+```{r}
+top.e <- top.e - rowMeans(top.e)
+```
+
+## Heatmap 
+```{r}
+heatmap.2(top.e, trace="none")
+```
+
+## Heatmap
+Each row correspond to a probeset, each column to a sample. One can observe that according to the top 100 differentially expressed genes, the samples cluster by scanner as expected. (Samples 20A and 10A are from scanner 1, samples 20B and 10B are from scanner 2). When you have many more samples, it is nice to add colors to the sample labels so that you can distinguish better the clustering:
+```{r}
+head(groups)
+my.colors <- c("green","blue","green","blue")
+```
+
+## Heatmap
+```{r}
+heatmap.2(top.e, trace="none", ColSideColors = my.colors)
+```
+
+## Heatmap
+By default, the **heatmap.2** function performs a row and column clustering; maybe that's not what you want. Look at **?heatmap.2** to get more detail. 
+
+## Clustering
+If you want to reproduce the dendrogram at the top of the heatmap, to see how samples cluster, the **hclust** function is your friend (but not really your best friend). You need first to compute a distance metric (**dist()**) between your samples; by default, the Euclidean distance is used, and the distance is computed between **rows**. In our dataset, samples are **columns**, so you need to **transpose** (function **t()**) the matrix of intensities
+```{r}
+my.dist <- dist(t(top.e))  # Euclidean distance, transposed matrix
+```
+
+## Dendrogram
+```{r}
+plot(hclust(my.dist))
+```
+
+## PCA
+Principal component analysis (PCA) is a a data reduction technique that can be used to simplify multidimensional data (for instance many genes) to fewer dimensions (e.g. 2 or 3) for plotting purposes. We can also look at the association between the first principal components and the phenotype data or batch data. 
+
+PCA is done in a way that that the first principal component has the largest possible variance (that is, accounts for as much of the variability in the data as possible), and each succeeding component in turn has the highest variance possible under the constraint that it is orthogonal to (i.e., uncorrelated with) the preceding components.
+
+## PCA code
+Lets perform a principal component analysis (PCA) on all genes:
+```{r}
+e <- exprs(rma(Dilution))
+pca <- prcomp(t(e), scale=TRUE) # To perform PCA
+names(pca)
+```
+The **x** argument contains the 4 principal components:
+```{r}
+pcs <- pca$x # To get principal components
+```
+
+## Scree plot
+A **scree plot** shows the variance of each component:
+```{r}
+screeplot(pca)
+```
+
+## Scree plot 2
+To calculate the percentages of variance explained instead of the raw variances:
+```{r}
+perc <- pca$sdev^2/(sum(pca$sdev^2))
+barplot(perc)
+```
+
+## Variance explained
+```{r}
+print(round(perc*100,2))
+```
+We will regress the PC1 against the scanner variable using the **linear regression** function **lm** in R. 
+
+## Linear regression
+```{r}
+pc1 <- pcs[,1]
+my.model <- lm(pc1~groups) # Regress pc1 against groups
+summary(my.model) # Show results
+```
+
+## Linear regression
+One can see that the coefficient associated with **scanner** (groups2 coefficient) is slightly significant (P-value = 0.055) (we only have 4 samples here... )
+
+## PCA plot
+Plotting the first PC against the second PC is often useful to look at clustering of samples:
+```{r}
+plot(pcs[,1],pcs[,2], pch=20, cex=3, col=c(1,2,1,2))
+```
