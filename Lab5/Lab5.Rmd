@@ -201,9 +201,20 @@ will omit the columns 1,5,6,7,8 in the ouput so that you will only get the desir
 ## Parallel jobs
 Aligning reads can take a long time; **Bowtie** has the option of using multiple cores. First, you need to request multiple nodes when using **qrsh** or **qsub**:
 ```sh
-qrsh -pe local 5 -l mem_free=100G,h_vmem= 26
+qrsh -pe local 5 -l mem_free=100G,h_vmem=26G
 ```
 is what you need to request 5 nodes. To specify **h_vmem**, you need to divide **mem_free** by the number of nodes and add a bit. Now, in **bowtie**, add the option **-p**:
 ```sh
 bowtie -p 5 ... 
+```
+
+## To submit a job
+- Create a file (say **myjob.sh**) containing the commands you want to pass to the cluster
+```sh
+module load bowtie
+bowtie -p 5 -5 13 -3 39 -m 1 hg19 example_2.fastq example_2.bam
+```
+and submit the file to the cluster using **qsub**:
+```sh
+qsub -pe local 5 -l mem_free=50G,h_vmem=12G myjob.sh
 ```

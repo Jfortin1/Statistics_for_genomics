@@ -266,11 +266,24 @@ plot(1:100, mean.quality, type=&quot;l&quot;,main=&quot;Quality per cycle&quot;,
 
 <p>Aligning reads can take a long time; <strong>Bowtie</strong> has the option of using multiple cores. First, you need to request multiple nodes when using <strong>qrsh</strong> or <strong>qsub</strong>:</p>
 
-<pre class = 'prettyprint lang-sh'>qrsh -pe local 5 -l mem_free=100G,h_vmem= 26</pre>
+<pre class = 'prettyprint lang-sh'>qrsh -pe local 5 -l mem_free=100G,h_vmem=26G</pre>
 
 <p>is what you need to request 5 nodes. To specify <strong>h_vmem</strong>, you need to divide <strong>mem_free</strong> by the number of nodes and add a bit. Now, in <strong>bowtie</strong>, add the option <strong>-p</strong>:</p>
 
-<pre class = 'prettyprint lang-sh'>bowtie -p 5 ...</pre></article></slide>
+<pre class = 'prettyprint lang-sh'>bowtie -p 5 ...</pre>
+
+</article></slide><slide class=''><hgroup><h2>To submit a job</h2></hgroup><article  id="to-submit-a-job">
+
+<ul>
+<li><p>Create a file (say <strong>myjob.sh</strong>) containing the commands you want to pass to the cluster</p>
+
+<pre class = 'prettyprint lang-sh'>module load bowtie
+bowtie -p 5 -5 13 -3 39 -m 1 hg19 example_2.fastq example_2.bam</pre>
+
+<p>and submit the file to the cluster using <strong>qsub</strong>:</p>
+
+<pre class = 'prettyprint lang-sh'>qsub -pe local 5 -l mem_free=50G,h_vmem=12G myjob.sh</pre></li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
