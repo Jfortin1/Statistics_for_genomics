@@ -1,0 +1,161 @@
+---
+title: "Median Polish Example"
+author: "Jean-Philippe Fortin"
+date: "April 12, 2014"
+output: ioslides_presentation
+---
+
+## Median Polish Example 
+
+In RMA, the median polish algorithm is used to summarize the expression values for a probeset so that we obtain a unique expression value for each targeted gene, for each sample. To see an example of median polish algorithm, I found these slides pretty useful (slides 34 to 40):
+
+http://www.ub.edu/stat/docencia/bioinformatica/microarrays/ADM/slides/2_PreprocessingMicroarrayData-2-Preprocessing%20and%20Normalization.pdf
+
+In this tutorial, we will write a piece of code to recreate the median polish algorithm. Among others, we will learn how to write **loops** in R and cover the concept of **function**.
+
+## Loading the data
+As before, we will load the Dilution data from the **affydata** package:
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(affy)
+library(affydata)
+data(Dilution)
+```
+Let's extract as previously the probe intensities (only PM) for the 20th probeset:
+```{r,message=FALSE, warning=FALSE}
+x <- log2(pm(Dilution, geneNames(Dilution)[20]))
+head(x, n=3)
+```
+
+## Original matrix
+Rows are probes, columns are samples. 
+```{r}
+dim(x)
+```
+There are 16 probes in this probeset.
+
+- For each row, we want to subtract the median from the row
+- Then for each column, we want to subtract the median from the column
+- We repeat until the median for each row and each column is 0
+
+## Row medians
+```{r}
+new.x <- x # We create a new matrix in order to keep 
+           # the original matrix intact
+n <- nrow(new.x) # Number of rows
+
+# We create a loop that wil go through all rows
+# and subtract the median
+for (i in 1:n){
+  row.median <- median(new.x[i,]) # Median for row i
+  new.x[i,] <- new.x[i, ] - row.median # We substract the median 
+                                       # from row i
+}
+```
+The command **for** is a reserved word to start a **loop** in R. **i** is the index for the loop, and we specified that **i** starts from 1 and finished at n by writiing **i in 1:n**. 
+
+## Column medians
+Similarly, we substract the column medians:
+```{r}
+m <- ncol(new.x) # Number of columns
+for (i in 1:m){
+  col.median <- median(new.x[,i]) # Median for column i
+  new.x[,i] <- new.x[,i] - col.median #Subtracting the median
+}
+```
+however, by doing so, the row medians are no longer 0. By iterating the procedure, we hope that at some point row and collumn medians will be simultaneously 0. In order to avoid to rewrite the same pieces of code over and over, we will create **functions**.
+
+
+
+## sub.row.median
+We will write a function, called **subtract.row.median** that takes a matrix as input, and return a matrix from which the row medians have been substracted:
+```{r}
+# The left-hand-side is the name of the function
+# The term inside function() is the input object. 
+# We can give any name we want
+# Here a call it "myMatrix"
+subtract.row.median <- function(myMatrix){
+  n <- nrow(myMatrix)
+  for (i in 1:n){
+   row.median <- median(myMatrix[i,])
+   myMatrix[i, ] <- myMatrix[i,] - row.median
+  }
+  return(myMatrix) # The function will return myMatrix
+}
+```
+
+
+
+## sub.row.column
+We will write a similar function for the columns:
+```{r}
+subtract.col.median <- function(myMatrix){
+  m <- ncol(myMatrix)
+  for (i in 1:m){
+   col.median <- median(myMatrix[,i])
+   myMatrix[,i] <- myMatrix[,i] - col.median
+  }
+  return(myMatrix)
+}
+```
+
+
+## correct.matrix
+We now write a function that first substracts the row medians, then subtracts the column medians:
+```{r}
+correct.matrix <- function(myMatrix){
+  myMatrix <- subtract.row.median(myMatrix)
+  myMatrix <- subtract.col.median(myMatrix)
+  return(myMatrix)
+}
+```
+This is for one iteration. We need to repeat that until all the row and column medians of the residuals are 0. 
+
+## colMedians and rowMedians
+The package **matrixStats** is very handy for common matrix operations. The functions **rowMedians** and **colMedians** return respectively the medians of the rows and the medians of the columns. Let's write a function that takes as input a matrix, and return a **boolean** expression (**TRUE** of **FALSE**) that tells you if all row and column medians are 0:
+```{r, message=FALSE, warning=FALSE}
+library(matrixStats)
+
+all.medians.zero <- function(myMatrix){
+  row.medians <- rowMedians(myMatrix)
+  col.medians <- colMedians(myMatrix)
+  (sum(abs(row.medians))+sum(abs(col.medians)))==0
+}
+```
+
+## Median polish function
+Now we are ready to create our own median polish function:
+```{r}
+median.polish <- function(myMatrix){
+  finished <- FALSE # FALSE until all row and column medians are 0                   
+  iter <- 0 # Number of iterations
+  while (!finished){ 
+    myMatrix <- correct.matrix(myMatrix) # Subtract the medians
+    finished <- all.medians.zero(myMatrix) # Set "finished" to
+                    # true if all row and column medians are 0
+    iter <- iter + 1 # Increment the number of iterations
+  }
+  cat(iter," iterations done. \n") # This will print the number of 
+                                   # iterations performed. 
+  return(myMatrix)
+} 
+```
+
+## Let's try it
+```{r}
+x <- log2(pm(Dilution, geneNames(Dilution)[20]))
+new.x <- median.polish(x)
+```
+By default, the RMA algorithm will stop after a fixed number of iterations to avoid cases where the algorithm does not converge. 
+
+## Last step
+Then, to correct for the probe and sample effects, we subtract the matrix of the median polish algorithm residuals from the original matrix:
+```{r}
+corrected.matrix <- x - new.x
+```
+and we take the column means to obtain our summarized gene expression value for each sample:
+```{r}
+final <- colMeans(corrected.matrix)
+final
+```
+
+

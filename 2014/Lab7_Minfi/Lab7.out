@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Reading Data}{}% 2
+\BOOKMARK [1][-]{section.3}{Quality control}{}% 3
+\BOOKMARK [1][-]{section.4}{MethylSet and RatioSet}{}% 4
+\BOOKMARK [1][-]{section.5}{SNPs}{}% 5
+\BOOKMARK [1][-]{section.6}{Map to Genome}{}% 6
+\BOOKMARK [1][-]{section.7}{Preprocessing and normalization}{}% 7
+\BOOKMARK [1][-]{section.8}{dmpFinder: to find differentially methylated positions \(DMPs\)}{}% 8
+\BOOKMARK [1][-]{section.9}{Bumphunter: to find differentially methylated regions \(DMRs\)}{}% 9
+\BOOKMARK [1][-]{section.10}{Sex prediction}{}% 10
+\BOOKMARK [1][-]{section.11}{Exercises}{}% 11
