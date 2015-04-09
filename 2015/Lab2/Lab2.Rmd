@@ -1,0 +1,173 @@
+---
+title: 'Lab 2: Differential analysis of gene expression data'
+author: "Jean-Philippe Fortin"
+date: "April 8, 2015"
+output: ioslides_presentation
+---
+
+## Goals of the lab
+Today we will
+
+- perform a differential analysis with limma (Linear model, Empirical Bayes)
+- produce a table of differentiated genes
+- correct for multiple comparison (Bonferroni, Benjamini & Hochberg )
+
+## Loading packages:
+First let's load the **CLL** package from Bioconductor: 
+```{r,echo,results='hide', message=FALSE, warning=FALSE}
+library(CLL)
+data(sCLLex)
+eset <- sCLLex
+```
+What processing was done to **sCLLex**?
+
+
+
+
+## Differential analysis with limma
+**Goal:** Find genes that have statistically significant different abundances between two (or more) groups. Our dataset only has 4 samples, with no interesting biological treatment group, but we will use it for demonstration purpose. We will use the package **limma**:
+```{r, warning=FALSE, message=FALSE}
+library(limma)
+```
+First let's define a comparison group:
+```{r}
+pheno <- pData(eset)
+groups <- as.factor(pheno$Disease)
+```
+
+## Linear model
+For each gene, we want to fit the model $$y_{i} = \beta_0 + \beta_1 x_i$$ where $y_i$ is the expression value for sample $i$, $\beta_0$ is an intercept, $x_i$ is a dummy variable equal to 0 for the first group and 1 for the second group, and $\beta_1$ is the coefficient associated with the change in expression between the two groups. Our goal is to test whether or not $\beta_1 = 0$. 
+
+## DE Analysis
+First, we need to construct a design matrix:
+```{r}
+design.matrix <- model.matrix(~groups)
+colnames(design.matrix) <- c("Intercept","Disease")
+head(design.matrix, n=6)
+```
+
+
+## Linear model
+We can fit the linear models using the **lmFit** function in **limma**. All we need is an expression matrix containing the summarized intensities and the design matrix:
+```{r}
+fit <- lmFit(object = eset, design = design.matrix)
+```
+**fit** is an object containing the results of the fits. For instance, one can retrieve the coefficients of the linear model with
+```{r}
+head(fit$coefficients, n=4)
+```
+## Linear model
+Note that the **fit** object does not contain any statistical test nor p-value. For each gene, we fitted the model $$y_{i} = \beta_0 + \beta_1 x_i$$ where $y_i$ is the expression value for sample $i$, $\beta_0$ is an intercept, $x_i$ is a dummy variable equal to 0 for the first group and 1 for the second group, and $\beta_1$ is the coefficient associated with the change in expression between the two groups. Our goal is to test whether or not $\beta_1 = 0$. The classical t-statistic is
+$$ t = \frac{\hat{\beta_1}}{\frac{s}{\sqrt{n}}}$$
+
+## Classical t-statistic
+How can we obtain the t-statistics from the object returned by **lmFit()**?
+```{r}
+beta <- fit$coefficients[,2]
+s <- fit$stdev.unscaled[,2]*fit$sigma
+n <- 4
+t <- (beta*sqrt(n))/s
+```
+Can you extract the p-value for each gene?
+
+## Empirical Bayes
+Computing classical t-statistics for experiments with a small number of arrays is unstable. The Empirical Bayes method implemented in **limma** borrows information across genes to make the analysis more stable. Precisely, the function **eBayes** computes moderated t-statistics by estimating the standard errors using empirical Bayes moderation. 
+```{r}
+fit2 <- eBayes(fit)
+names(fit2)
+```
+
+## P-values histogram
+Let's create a histogram of the p-values:
+```{r}
+hist(fit2$p.value[,2])
+```
+
+## Volcano plot
+A **volcano plot** is used to plot significance (e.g.instance p-value) versus fold-change (e.g. diff. expression coefficient):
+```{r}
+p <- fit2$p.value[,2]
+plot(fit2$coefficients[,2], -log2(p), pch=20, cex=0.3)
+```
+
+## Volcano plot
+**limma** has a command to produce a volcano plot on a fitted object produced by the  **eBayes** command:
+```{r}
+volcanoplot(fit2, coef=2) 
+```
+
+## Volcano plots
+
+- Why did we use the negative logarithm of the p-values instead of the raw p-values?
+- The two previous volcano plots look very similar, but are different. Why is that? Type in **?volcanoplot** in the R console to get information about what **volcanoplot** does. 
+
+## Multiple comparison
+- The command **p.adjust()** returns adjusted p-values for different methods. (see **?p.adjust**)
+- For instance, to correct for Family-Wise Error Rate (FWER), one can use Bonferroni correction:
+```{r}
+b.pvalues <- p.adjust(p, method = "bonferroni" )
+```
+- To correct for False Discovery Rate (FDR), one can use the Benjamini-Hochberg correction method:
+```{r}
+fdr.pvalues <- p.adjust(p, method = "fdr")
+summary(fdr.pvalues)
+```
+
+## topTable function in limma
+The function **topTable** is really useful to return the top differentially expressed genes. For instance, to return the top 100 genes that pass an uncorrected p-value threshold of 0.05, one can use
+```{r}
+table <- topTable(fit2,coef = 2, adjust.method="none", 
+                  p.value = 0.05, number=100)
+head(table, n=3)
+```
+**coef=2** means that we are interested in the second coefficient of our design matrix, i.e. the treatment effect.
+
+## Annotation package
+We are not totally happy: we still don't have the genomic information of these probesets, only probeset IDs. We need to map these probesets to genes. We need first to load the annotation package containing the relevant information for this affymetrix array: 
+```{r, warning=FALSE, message=FALSE}
+library("hgu95av2.db")
+columns(hgu95av2.db) # To see the info stored in the annotation
+```
+
+
+## Find gene names
+To find the gene symbol corresponding to the top 100 genes, one can do the following:
+```{r, warning=FALSE, message=FALSE}
+probeNames <- rownames(table) # Names of the top 100 probes
+info <- select(hgu95av2.db, probeNames, c("SYMBOL"), "PROBEID")
+head(info, n=3)
+dim(info)
+```
+Wait, we had 100 probes, and now we have 104 gene symbols. What's wrong?
+
+## Find gene names
+It seems that some probesets map to more than one gene:
+```{r, warning=FALSE, message=FALSE}
+table(table(info[,1]))
+```
+97 probesets map to 1 gene, 2 probesets map to 2 genes and 1 probeset maps to 3 genes. Let's use only the first gene mapped for each probeset:
+```{r}
+info <- info[match(probeNames, info$PROBEID),]
+dim(info)
+```
+(One could also decide to remove these probesets, or to do something else)
+
+## Conclusion
+```{r, warning=FALSE, message=FALSE}
+table <- cbind(table, info$SYMBOL)
+head(table, n=3)
+```
+**hgu95av2.db** contains much more information than the gene symbol; please explore the other columns by changing **"SYMBOL"** by another column name in  
+```{r, eval=FALSE}
+select(hgu95av2.db, probeNames, c("SYMBOL"), "PROBEID")
+```
+
+
+
+
+
+
+
+
+
+
