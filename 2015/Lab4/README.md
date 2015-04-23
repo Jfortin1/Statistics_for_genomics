@@ -14,17 +14,17 @@ Basic commands:
 
 ### Some downloads:
 
+SRA experiment:
+    
+    cd homework3
     curl -O ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP014%2FSRP014134/SRR518875/SRR518875.sra
 
-To download SRA toolkit:
+Need to download SRA toolkit to extract fastq file:
 
     curl -O http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.4.5-2/sratoolkit.2.4.5-2-ubuntu64.tar.gz
-
-and unzip it:
-
     tar -zxvf sratoolkit.2.4.5-2-ubuntu64.tar.gz
  
-Let's set up the permissions:
+Set up permissions for fastq-dump:
 
     chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump
 
