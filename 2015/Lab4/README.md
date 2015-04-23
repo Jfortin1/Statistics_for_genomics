@@ -14,3 +14,7 @@ cd <nameOfYourDirectory>
 
 ### To download a file (from GEO):
 curl -O ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP014%2FSRP014134/SRR518875/SRR518875.sra
+
+
+### To use sra-toolkit installed in my session:
+/home/student/jfortin/sratoolkit.2.4.5-2-centos_linux64/bin/fastq-dump
