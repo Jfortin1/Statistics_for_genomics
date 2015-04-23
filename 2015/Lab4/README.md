@@ -31,26 +31,27 @@ chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump --split-3
 qrsh -l mem_free=1G
 cd homework3
 
-# Let's get the fastq file:
-../sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump SRR518875.sra
+To download the fastq file:
+    ../sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump SRR518875.sra
 
-# To get the number of reads:
-wc -l SRR518875.fastq (Divided by 4)
+To get the number of reads:
+    wc -l SRR518875.fastq (Divided by 4)
 
-# Let's use bowtie on a subset of the data:
-# Let's create a subset first:
-head -n 4000 SRR518875.fastq > example.fastq
 
-# Let's use Bowtie:
-module load bowtie
+We will create a subset of the data: (1000 first reads):
+    head -n 4000 SRR518875.fastq > example.fastq
+
+
 
 Let's download the Yeast genome:
 
     curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie_indexes/s_cerevisiae.ebwt.zip
     unzip s_cerevisiae.ebwt.zip
 
-# To align it:
-bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
+# We will align to the yeast genome:
+    module load bowtie
+    bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
+    
 # Suppose you wanna get rid of columns 5,6,7,8:
 bowtie  --suppress 5,6,7,8 ../yeast_genome/s_cerevisiae example.fastq example.sam 
 
