@@ -58,8 +58,9 @@ Let's download the Yeast genome:
     module load bowtie
     bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
     
-# Suppose you wanna get rid of columns 5,6,7,8:
-bowtie  --suppress 5,6,7,8 ../yeast_genome/s_cerevisiae example.fastq example.sam 
+To get rid of columns 5,6,6,8 in the output:
+
+    bowtie  --suppress 5,6,7,8 ../yeast_genome/s_cerevisiae example.fastq example.sam 
 
 
 
