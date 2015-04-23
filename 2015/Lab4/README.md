@@ -44,10 +44,14 @@ head -n 4000 SRR518875.fastq > example.fastq
 # Let's use Bowtie:
 module load bowtie
 
-# Let's download the Yeast genome:
+Let's download the Yeast genome:
+'''
 curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie_indexes/s_cerevisiae.ebwt.zip
-# Let's unzip it:
+'''
+and unzip it:
+'''
 unzip s_cerevisiae.ebwt.zip
+'''
 
 # To align it:
 bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
