@@ -27,9 +27,7 @@ and unzip it:
 Let's set up the permissions:
 
     chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump
-    
-### In case your experiment is paired-end, use instead:
-    chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump --split-3
+
 
 Let's get on a node:
 
@@ -56,7 +54,7 @@ Let's download the Yeast genome:
     curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie_indexes/s_cerevisiae.ebwt.zip
     unzip s_cerevisiae.ebwt.zip
 
-### Alignment using bowtieL
+### Alignment using bowtie
     module load bowtie
     bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
     
