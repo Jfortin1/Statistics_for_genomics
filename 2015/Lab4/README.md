@@ -57,3 +57,4 @@ bowtie  --suppress 5,6,7,8 ../yeast_genome/s_cerevisiae example.fastq example.sa
 
 
 
+
