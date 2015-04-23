@@ -14,13 +14,14 @@ Basic commands:
 
 ### Some downloads:
 
-SRA experiment:
+To download the SRA experiment in the homework3 folder:
     
     cd homework3
     curl -O ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP014%2FSRP014134/SRR518875/SRR518875.sra
 
-Need to download SRA toolkit to extract fastq file:
+Also need to download SRA toolkit that will allow us to convert the SRA experiment to a fastq file:
 
+    cd $home
     curl -O http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.4.5-2/sratoolkit.2.4.5-2-ubuntu64.tar.gz
     tar -zxvf sratoolkit.2.4.5-2-ubuntu64.tar.gz
  
@@ -28,19 +29,22 @@ Set up permissions for fastq-dump:
 
     chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump
 
+### Converting the SRA experiment to fastq file:
 
-Let's get on a node:
+We first get on a node using the qrsh command:
 
     qrsh -l mem_free=1G
+    
+We are ready to extract the fastq file from the SRA experiment:
     cd homework3
 
-To download the fastq file:
-
+    cd homework3
     ../sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump SRR518875.sra
 
-To get the number of reads:
+We now have the file SRR518875.fastq in the homework directory. 
 
-    wc -l SRR518875.fastq (Divided by 4)
+    head -n 8 SRR518875.fastq 
+    wc -l SRR518875.fastq # Number of reads x 4
 
 
 We will create a subset of the data: (1000 first reads):
