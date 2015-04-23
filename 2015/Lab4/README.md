@@ -47,20 +47,22 @@ We now have the file SRR518875.fastq in the homework directory.
     wc -l SRR518875.fastq # Number of reads x 4
 
 
-We will create a subset of the data: (1000 first reads):
+For this lab we will work only with a subset of the data (first 1000 reads): 
 
     head -n 4000 SRR518875.fastq > example.fastq
 
 
+### Alignment using bowtie
 
-Let's download the Yeast genome:
+We need the Yeast genome index files from the Bowtie website:
 
     curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie_indexes/s_cerevisiae.ebwt.zip
     unzip s_cerevisiae.ebwt.zip
 
-### Alignment using bowtie
+We are ready to align the reads with the default parameters of Bowtie:
+    
     module load bowtie
-    bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
+    bowtie ../s_cerevisiae example.fastq example.sam 
     
 To get rid of columns 5,6,6,8 in the output:
 
