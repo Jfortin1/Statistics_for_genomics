@@ -3,21 +3,18 @@ Cheat sheet for Unix: [http://www.rain.org/~mkummel/unix.html](http://www.rain.o
 Tutorials for Unix: [http://www.ee.surrey.ac.uk/Teaching/Unix/](http://www.ee.surrey.ac.uk/Teaching/Unix/)
 
 
-###  To go on the cluster:
-ssh jfortin@jhpce02.jhsph.edu
+To go on the cluster:
 
-### TO create a directory:
+    ssh jfortin@jhpce02.jhsph.edu
+
+Basic commands:
 
     mkdir <nameOfYourDirectory>
-
-### To access directory:
-
     cd <nameOfYourDirectory>
 
-### To download a file (from GEO):
+### Some downloads:
 
     curl -O ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP014%2FSRP014134/SRR518875/SRR518875.sra
-
 
 To download SRA toolkit:
 
@@ -59,7 +56,7 @@ Let's download the Yeast genome:
     curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie_indexes/s_cerevisiae.ebwt.zip
     unzip s_cerevisiae.ebwt.zip
 
-# We will align to the yeast genome:
+### Alignment using bowtieL
     module load bowtie
     bowtie ../yeast_genome/s_cerevisiae example.fastq example.sam 
     
