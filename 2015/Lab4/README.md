@@ -7,38 +7,49 @@ Tutorials for Unix: [http://www.ee.surrey.ac.uk/Teaching/Unix/](http://www.ee.su
 ssh jfortin@jhpce02.jhsph.edu
 
 ### TO create a directory:
-mkdir <nameOfYourDirectory>
+
+    mkdir <nameOfYourDirectory>
 
 ### To access directory:
-cd <nameOfYourDirectory>
+
+    cd <nameOfYourDirectory>
 
 ### To download a file (from GEO):
-curl -O ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP014%2FSRP014134/SRR518875/SRR518875.sra
+
+    curl -O ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP014%2FSRP014134/SRR518875/SRR518875.sra
 
 
-### To download SRA toolkit:
-curl -O http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.4.5-2/sratoolkit.2.4.5-2-ubuntu64.tar.gz
+To download SRA toolkit:
 
-### Let's unzip it:
-tar -zxvf sratoolkit.2.4.5-2-ubuntu64.tar.gz
+    curl -O http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.4.5-2/sratoolkit.2.4.5-2-ubuntu64.tar.gz
 
-### Let's set up the permissions:
-chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump
+and unzip it:
+
+    tar -zxvf sratoolkit.2.4.5-2-ubuntu64.tar.gz
+ 
+Let's set up the permissions:
+
+    chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump
+    
 ### In case your experiment is paired-end, use instead:
-chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump --split-3
+    chmod 777 sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump --split-3
 
-### Let's get on a node:
-qrsh -l mem_free=1G
-cd homework3
+Let's get on a node:
+
+    qrsh -l mem_free=1G
+    cd homework3
 
 To download the fastq file:
+
     ../sratoolkit.2.4.5-2-ubuntu64/bin/fastq-dump SRR518875.sra
 
 To get the number of reads:
+
     wc -l SRR518875.fastq (Divided by 4)
 
 
 We will create a subset of the data: (1000 first reads):
+
     head -n 4000 SRR518875.fastq > example.fastq
 
 
