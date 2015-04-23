@@ -9,8 +9,9 @@ To go on the cluster:
 
 Basic commands:
 
-    mkdir <nameOfYourDirectory>
-    cd <nameOfYourDirectory>
+    mkdir <nameOfYourDirectory> # To create a directory 
+    cd <nameOfYourDirectory> # To access a directory
+    touch <newFile> # To create a new file
 
 ### Some downloads:
 
