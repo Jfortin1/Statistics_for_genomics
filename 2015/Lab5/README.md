@@ -135,7 +135,17 @@ As an example, here is how to produce a coverage plot of the peaks using the log
     library(ChIPseeker)
     covplot(peaks.gr, weightCol="X.10.log10.pvalue.")
 
-## Part 3: More about the Hopkins Cluster
+## Part 3: Visualization of the peaks usint the wig files
+
+    library(rtracklayer)
+    wigDir <- "Condition1_MACS_wiggle/treat"
+    track  <- import(file.path(wigDir, "Condition1_treat_afterfiting_Scchr01.wig.gz"))
+    pos  <- (start(track)+end(track))/2
+    score <- track$score
+    indices <- 1000:1500
+    barplot( score[indices], col="firebrick")
+
+## Part 4: More about the Hopkins Cluster
 
 - ssh, qstat, qmem, qdel, screen -S, qdel -u, qsub -cwd -V -l mem_free=10G,h_vmem=12G yourScript.sh $i;-l h_fsize=40G
 
