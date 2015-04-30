@@ -120,7 +120,7 @@ We will create a GenomicRanges object that contain the genomic intervals of the 
         gr
     }
 
-
+    library(GenomicRanges)
     peaks.gr <- data.frame2GRanges(peaks)
     elementMetadata(peaks.gr) <- peaks[,4:9]
     
