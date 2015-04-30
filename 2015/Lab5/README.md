@@ -151,5 +151,5 @@ As an example, here is how to produce a coverage plot of the peaks using the log
 
 To set up ssh keys:
 
-(Click here)[https://jhpce.jhu.edu/knowledge-base/authentication/login/]
+[Click here](https://jhpce.jhu.edu/knowledge-base/authentication/login/)
 
