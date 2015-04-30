@@ -1,4 +1,4 @@
-### Lab 5: Analysis of ChIP-Seq data
+# Lab 5: Analysis of ChIP-Seq data
 
 ## Part 1: Using macs
 
