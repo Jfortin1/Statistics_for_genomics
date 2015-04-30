@@ -115,5 +115,6 @@ Let's create a GenomicRanges object. We first need this useful function from the
     macsGR <- bsseq::data.frame2GRanges(macsOutput)
     elementMetadata(macsGR) <- macsOutput[,4:8]
     
+    ## Part 3: More about the Hopkins Cluster
 
 
