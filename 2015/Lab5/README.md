@@ -23,9 +23,9 @@ First step is to align the reads using `bowtie`. The option `--sam` will output 
 Make sure you are poitning to the right genome path (see Lab 4). Let's use macs to get the peaks:
 
     module load macs
-    macs14 -t treatment.sam -c control.sam -g 1.26e+7 Condition1
+    macs14 -t treatment.sam -c control.sam -g 1.26e+7 -n Condition1
 
-`-t` specifies the input file. macs accepts different formats: sam, bam, and bed for instance. The `-c` specficies the control samples. The `-g` specifies the length of the genome. How do I know that s. cerevisiae has length 1.26e+7? I used google :). THe output files will have names `Condition1_(andSomethingElse)`
+`-t` specifies the input file. macs accepts different formats: sam, bam, and bed for instance. The `-c` specficies the control samples. The `-g` specifies the length of the genome. How do I know that s. cerevisiae has length 1.26e+7? I used google :). `-n` specifices the output files; the output files will have names `Condition1_(andSomethingElse)`
 
 
 
