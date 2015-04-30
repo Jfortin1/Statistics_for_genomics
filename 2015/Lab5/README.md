@@ -63,15 +63,16 @@ The columns are: chr, start, end, peak id and score (height of the summit).
     
 ## Part 2: Annotation of the peaks
 
-[ChIPpeakAnno](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html) and `ChIPseeker` are two useful packages for annotation of ChIP-Seq peaks. They are available via Bioconductor [http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html) and [http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html]()http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html
+[ChIPpeakAnno](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html) and [ChIPseeker](http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html) are two useful packages for annotation of ChIP-Seq peaks. They are available via Bioconductor.
 
     source("http://bioconductor.org/biocLite.R")
     biocLite("ChIPpeakAnno")
+    biocLite("ChIPseeker")
 
-I won't go through all the details of the package -- the vignette is very well documented and I suggest reading it for your homework: [http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf](http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf). Here's how to get started:
-
-    library(ChIPpeakAnno)
-    macsOutput <- read.csv("Condition1_negative_peaks.xls", sep="\t")
+I won't go through all the details for these two packages -- the vignettes are very well documented and you should read them for your homework. Here are some tips to get started:
+    
+    # To read the peaks into R:
+    peaks <- read.csv("Condition1_negative_peaks.xls", sep="\t")
     head(macsOutput)
     
        chr    start   end length summit tags X.10.log10.pvalue. fold_enrichment
