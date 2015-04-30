@@ -1,4 +1,4 @@
-### Part 1: Using macs
+### Lab 5: Analysis of ChIP-Seq data
 
 Macs is a simple and powerfull model-based peak calling algorithm for ChIP-Seq data on the command line. On the cluster, it is already installed and you can load it by
 
