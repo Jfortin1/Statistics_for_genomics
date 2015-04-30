@@ -10,6 +10,12 @@ If you want to have more information about how macs works, here is a nice tutori
 
 [http://www.slideshare.net/lucacozzuto/macs-course](http://www.slideshare.net/lucacozzuto/macs-course)
 
+### Example dataset for this lab:
+
+I'm going to use the first million reads for the treatment and control samples (first condition) from the GSE39147 experiment. I stored the reads in the files 'treatment.fastq', 'control.fastq'
+
+    
+
 
 To go on the cluster:
 
