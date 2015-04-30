@@ -72,13 +72,23 @@ The columns are: chr, start, end, peak id and score (height of the summit).
 I won't go through all the details for these two packages -- the vignettes are very well documented and you should read them for your homework. Here are some tips to get started:
     
     # To read the peaks into R:
-    peaks <- read.csv("Condition1_negative_peaks.xls", sep="\t")
-    head(macsOutput)
+    peaks <- read.csv("Condition1_peaks.xls", sep="\t", skip=23)
+    head(peaks)
     
-       chr    start   end length summit tags X.10.log10.pvalue. fold_enrichment
-    1 Scmito     7  3251   3245    776  941            1284.94            5.40
-    2 Scmito 65578 68862   3285   1896  762             800.00            6.07
-    3 Scmito 68893 71886   2994    386  547             209.30            4.84
+              chr  start    end length summit tags X.10.log10.pvalue. fold_enrichment
+    1 Scchr02  44811  45956   1146    584  154             124.31            4.14
+    2 Scchr02  89068  90214   1147    582  156             142.75            4.52
+    3 Scchr02 167631 168780   1150    565  166             173.45            5.54
+    4 Scchr02 332054 333140   1087    565  185             260.70            7.91
+    5 Scchr02 414864 416113   1250    714  200             255.51            6.77
+    6 Scchr02 477801 479149   1349    643  183              60.38            2.67
+      FDR...
+    1   4.29
+    2   4.69
+    3   6.12
+    4  14.29
+    5  13.33
+    6   2.63
     
 Let's create a GenomicRanges object. We first need this useful function from the `bsseq` package:
 
