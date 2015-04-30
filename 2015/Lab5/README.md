@@ -27,6 +27,23 @@ Make sure you are poitning to the right genome path (see Lab 4). Let's use macs 
 
 `-t` specifies the input file. macs accepts different formats: sam, bam, and bed for instance. The `-c` specficies the control samples. The `-g` specifies the length of the genome. How do I know that s. cerevisiae has length 1.26e+7? I used google :). `-n` specifices the output files; the output files will have names `Condition1_(andSomethingElse)`
 
+The ouput files are `Condition1_negative_peaks.xls`, `Condition1_peaks.bed`, `Condition1_peaks.xls` and `Condition1_summits.bed`.
+
+    head Condition1_peaks.bed
+    
+    Scchr02 44810   45956   MACS_peak_1     124.31
+    Scchr02 89067   90214   MACS_peak_2     142.75
+    Scchr02 167630  168780  MACS_peak_3     173.45
+    Scchr02 332053  333140  MACS_peak_4     260.70
+    Scchr02 414863  416113  MACS_peak_5     255.51
+    Scchr02 477800  479149  MACS_peak_6     60.38
+    Scchr02 592433  593497  MACS_peak_7     131.19
+    Scchr02 603820  604934  MACS_peak_8     190.47
+    Scchr02 605509  606660  MACS_peak_9     209.67
+    Scchr03 10      783     MACS_peak_10    77.97
+
+
+
 
 
 
