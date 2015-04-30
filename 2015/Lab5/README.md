@@ -149,3 +149,7 @@ As an example, here is how to produce a coverage plot of the peaks using the log
 
 - ssh, qstat, qmem, qdel, screen -S, qdel -u, qsub -cwd -V -l mem_free=10G,h_vmem=12G yourScript.sh $i;-l h_fsize=40G
 
+To set up ssh keys:
+
+(Click here)[https://jhpce.jhu.edu/knowledge-base/authentication/login/]
+
