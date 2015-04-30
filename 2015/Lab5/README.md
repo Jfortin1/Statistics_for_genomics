@@ -1,6 +1,6 @@
 # Lab 5: Analysis of ChIP-Seq data
 
-## Part 1: Using macs
+## Part 1: Using macs to produce the list of peaks
 
 Macs is a simple and powerfull model-based peak calling algorithm for ChIP-Seq data on the command line. On the cluster, it is already installed and you can load it by
 
@@ -61,7 +61,9 @@ The columns are: chr, start, end, peak id and score (-10*log(pvalue)). The file 
     
 The columns are: chr, start, end, peak id and score (height of the summit). 
     
+## Part 2: Using ChIPpeakAnno to annotate the peaks
 
+ChIPpeakAnno is an R package for "Batch annotation of the peaks identified from either ChIP-seq, ChIP-chip experiments or any experiments resulted in large number of chromosome ranges". This is available via Bioconductor [http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html)
 
 
 
