@@ -65,10 +65,10 @@ The columns are: chr, start, end, peak id and score (height of the summit).
 
 ChIPpeakAnno is an R package for "Batch annotation of the peaks identified from either ChIP-seq, ChIP-chip experiments or any experiments resulted in large number of chromosome ranges". This is available via Bioconductor [http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html)
 
+    source("http://bioconductor.org/biocLite.R")
+    biocLite("ChIPpeakAnno")
 
-
-
-    
+I won't go through all the details of the package -- the vignette is very well documented and I suggest reading it for your homework: [http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf](http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf)
 
 
 
