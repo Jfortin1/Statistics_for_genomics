@@ -137,4 +137,5 @@ As an example, here is how to produce a coverage plot of the peaks using the log
 
 ## Part 3: More about the Hopkins Cluster
 
+- ssh, qstat, qmem, qdel, screen -S, qdel -u, qsub -cwd -V -l mem_free=10G,h_vmem=12G yourScript.sh $i;-l h_fsize=40G
 
