@@ -5,8 +5,10 @@
 Macs is a simple and powerfull model-based peak calling algorithm for ChIP-Seq data on the command line. On the cluster, it is already installed and you can load it by
 
     module load macs
+    
+If you want to have more information about how macs works, here is a nice tutorial:
 
-Tutorials for Unix: [http://www.ee.surrey.ac.uk/Teaching/Unix/](http://www.ee.surrey.ac.uk/Teaching/Unix/)
+[http://www.slideshare.net/lucacozzuto/macs-course](http://www.slideshare.net/lucacozzuto/macs-course)
 
 
 To go on the cluster:
