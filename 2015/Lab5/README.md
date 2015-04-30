@@ -63,7 +63,7 @@ The columns are: chr, start, end, peak id and score (height of the summit).
     
 ## Part 2: Annotation of the peaks
 
-`ChIPpeakAnno` and `ChIPseeker` are two useful packages for annotation of ChIP-Seq peaks. They are available via Bioconductor [http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html) and [http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html]()http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html
+[ChIPpeakAnno](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html) and `ChIPseeker` are two useful packages for annotation of ChIP-Seq peaks. They are available via Bioconductor [http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html](http://www.bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html) and [http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html]()http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html
 
     source("http://bioconductor.org/biocLite.R")
     biocLite("ChIPpeakAnno")
