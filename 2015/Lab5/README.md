@@ -29,6 +29,8 @@ Make sure you are poitning to the right genome path (see Lab 4). Let's use macs 
 
 The ouput files are `Condition1_negative_peaks.xls`, `Condition1_peaks.bed`, `Condition1_peaks.xls` and `Condition1_summits.bed`.
 
+The file `peaks.bed` contains the peaks information:
+
     head Condition1_peaks.bed
     
     Scchr02 44810   45956   MACS_peak_1     124.31
@@ -42,6 +44,23 @@ The ouput files are `Condition1_negative_peaks.xls`, `Condition1_peaks.bed`, `Co
     Scchr02 605509  606660  MACS_peak_9     209.67
     Scchr03 10      783     MACS_peak_10    77.97
 
+The columns are: chr, start, end, peak id and score (-10*log(pvalue)). The file `summits.bed` contains the summits of the peaks:
+
+    head Condition1_summits.bed
+    
+    Scchr02 45393   45394   MACS_peak_1     59.00
+    Scchr02 89648   89649   MACS_peak_2     62.00
+    Scchr02 168194  168195  MACS_peak_3     76.00
+    Scchr02 332617  332618  MACS_peak_4     110.00
+    Scchr02 415576  415577  MACS_peak_5     93.00
+    Scchr02 478442  478443  MACS_peak_6     50.00
+    Scchr02 593003  593004  MACS_peak_7     84.00
+    Scchr02 604346  604347  MACS_peak_8     92.00
+    Scchr02 606035  606036  MACS_peak_9     97.00
+    Scchr03 203     204     MACS_peak_10    62.00
+    
+The columns are: chr, start, end, peak id and score (height of the summit)
+    
 
 
 
