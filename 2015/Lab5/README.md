@@ -90,7 +90,7 @@ I won't go through all the details for these two packages -- the vignettes are v
     5  13.33
     6   2.63
     
-Let's create a GenomicRanges object. We first need this useful function from the `bsseq` package:
+We will create a GenomicRanges object that contain the genomic intervals of the peaks and all the other columns above. One way to do that is to use the `data.frame2GRanges` function from the `bsseq` package:
 
     data.frame2GRanges <- function(df, keepColumns = FALSE, ignoreStrand = FALSE) {
         stopifnot(class(df) == "data.frame")
@@ -121,11 +121,20 @@ Let's create a GenomicRanges object. We first need this useful function from the
     }
 
 
-
-    library(bsseq)
-    macsGR <- bsseq::data.frame2GRanges(macsOutput)
-    elementMetadata(macsGR) <- macsOutput[,4:8]
+    peaks.gr <- data.frame2GRanges(peaks)
+    elementMetadata(peaks.gr) <- peaks[,4:9]
     
+To use the ChIPseeker package, you will need the annotation `TxDb.Scerevisiae.UCSC.sacCer3.sgdGene` instead of the annotation `TxDb.Hsapiens.UCSC.hg19.knownGene` used in the vignette examples. 
+
+    source("http://bioconductor.org/biocLite.R")
+    biocLite("TxDb.Scerevisiae.UCSC.sacCer3.sgdGene")
+    library(TxDb.Scerevisiae.UCSC.sacCer3.sgdGene)
+    
+As an example, here is how to produce a coverage plot of the peaks using the log10 pvalue as a score:
+    
+    library(ChIPseeker)
+    covplot(peaks.gr, weightCol="X.10.log10.pvalue.")
+
 ## Part 3: More about the Hopkins Cluster
 
 
