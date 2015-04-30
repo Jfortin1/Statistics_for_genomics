@@ -68,9 +68,17 @@ ChIPpeakAnno is an R package for "Batch annotation of the peaks identified from 
     source("http://bioconductor.org/biocLite.R")
     biocLite("ChIPpeakAnno")
 
-I won't go through all the details of the package -- the vignette is very well documented and I suggest reading it for your homework: [http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf](http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf)
+I won't go through all the details of the package -- the vignette is very well documented and I suggest reading it for your homework: [http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf](http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf). Here is an intro:
 
-
-
+    library(ChIPpeakAnno)
+    macsOutput <- read.csv("Condition1_negative_peaks.xls", sep="\t")
+    head(macsOutput)
+    
+       chr    start   end length summit tags X.10.log10.pvalue. fold_enrichment
+    1 Scmito     7  3251   3245    776  941            1284.94            5.40
+    2 Scmito 65578 68862   3285   1896  762             800.00            6.07
+    3 Scmito 68893 71886   2994    386  547             209.30            4.84
+    
+    
 
 
