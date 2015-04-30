@@ -68,7 +68,7 @@ ChIPpeakAnno is an R package for "Batch annotation of the peaks identified from 
     source("http://bioconductor.org/biocLite.R")
     biocLite("ChIPpeakAnno")
 
-I won't go through all the details of the package -- the vignette is very well documented and I suggest reading it for your homework: [http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf](http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf). Here is an intro:
+I won't go through all the details of the package -- the vignette is very well documented and I suggest reading it for your homework: [http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf](http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.pdf). Here's how to get started:
 
     library(ChIPpeakAnno)
     macsOutput <- read.csv("Condition1_negative_peaks.xls", sep="\t")
@@ -79,6 +79,41 @@ I won't go through all the details of the package -- the vignette is very well d
     2 Scmito 65578 68862   3285   1896  762             800.00            6.07
     3 Scmito 68893 71886   2994    386  547             209.30            4.84
     
+Let's create a GenomicRanges object. We first need this useful function from the `bsseq` package:
+
+    data.frame2GRanges <- function(df, keepColumns = FALSE, ignoreStrand = FALSE) {
+        stopifnot(class(df) == "data.frame")
+        stopifnot(all(c("start", "end") %in% names(df)))
+        stopifnot(any(c("chr", "seqnames") %in% names(df)))
+        if("seqnames" %in% names(df))
+            names(df)[names(df) == "seqnames"] <- "chr"
+        if(!ignoreStrand && "strand" %in% names(df)) {
+            if(is.numeric(df$strand)) {
+                strand <- ifelse(df$strand == 1, "+", "*")
+                strand[df$strand == -1] <- "-"
+                df$strand <- strand
+            }
+            gr <- GRanges(seqnames = df$chr,
+                          ranges = IRanges(start = df$start, end = df$end),
+                          strand = df$strand)
+        } else {
+            gr <- GRanges(seqnames = df$chr,
+                          ranges = IRanges(start = df$start, end = df$end))
+        }
+        if(keepColumns) {
+            dt <- as(df[, setdiff(names(df), c("chr", "start", "end", "strand"))],
+                         "DataFrame")
+            elementMetadata(gr) <- dt
+        }
+        names(gr) <- rownames(df)
+        gr
+    }
+
+
+
+    library(bsseq)
+    macsGR <- bsseq::data.frame2GRanges(macsOutput)
+    elementMetadata(macsGR) <- macsOutput[,4:8]
     
 
 
