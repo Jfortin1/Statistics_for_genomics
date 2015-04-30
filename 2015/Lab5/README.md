@@ -25,7 +25,7 @@ Make sure you are poitning to the right genome path (see Lab 4). Let's use macs 
     module load macs
     macs14 -t treatment.sam -c control.sam -g 1.26e+7 Condition1
 
-`-t` specifies the input file. macs accepts different formats: sam, bam, and bed for instance. The `-c` specficies the control samples. The `-g` specifies the length of the genome. How do I know that s. cerevisiae has length 1.26e+7? I used google :). THe output files will have names Condition1_<andSomethingElse>
+`-t` specifies the input file. macs accepts different formats: sam, bam, and bed for instance. The `-c` specficies the control samples. The `-g` specifies the length of the genome. How do I know that s. cerevisiae has length 1.26e+7? I used google :). THe output files will have names Condition1_(andSomethingElse)
 
 
 
