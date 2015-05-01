@@ -72,7 +72,17 @@ and
 
 [Click here](https://jhpce.jhu.edu/knowledge-base/authentication/login/)
 
+### Permissions
 
+`chmod`
+
+### Symbolic link
+
+`ln -s`
+
+## Part 3: Other stuff
+
+GitHub, Gist, code organization
 
 
 
