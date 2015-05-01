@@ -92,7 +92,7 @@ I won't go through all the details for these two packages -- the vignettes are v
     5  13.33
     6   2.63
     
-We will create a GenomicRanges object that contain the genomic intervals of the peaks and all the other columns above. One way to do that is to use the `data.frame2GRanges` function from the `bsseq` package:
+We will create a `GenomicRanges` object that contain the genomic intervals of the peaks and all the other columns above. One way to do that is to use the `data.frame2GRanges` function from the `bsseq` package:
 
     data.frame2GRanges <- function(df, keepColumns = FALSE, ignoreStrand = FALSE) {
         stopifnot(class(df) == "data.frame")
@@ -137,7 +137,7 @@ As an example, here is how to produce a coverage plot of the peaks using the log
     library(ChIPseeker)
     covplot(peaks.gr, weightCol="X.10.log10.pvalue.")
 
-## Part 3: Visualization of the peaks usint the wig files
+## Part 3: Visualization of the peaks using wig files:
 
     library(rtracklayer)
     wigDir <- "Condition1_MACS_wiggle/treat"
