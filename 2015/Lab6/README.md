@@ -84,6 +84,8 @@ and
 
 GitHub, Gist, code organization
 
+Colors in R 
+
 
 
 
