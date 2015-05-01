@@ -52,7 +52,7 @@ cut -f 1 example.txt | sort | uniq -c
    1 chr4
 ```
 First, the `|` operator (usually refered as "pipe") will use the output of the left-hand side command as the input of the right-hand side command. In the example above, `cut -f 1 example.txt` will grad the first column, than it will be sorted using `sort`, and the sorted list will be fed to `uniq -c`. The latter command will create a list a unique elements, and the option `-c` will output the  number of occurences for each element. That's one way to count how many reads mapped to each of the chromosome, for instance. 
-
+- In R, the function `table()` on a vector will produce a similar output. 
 
 ## Part 2: More about the Hopkins Cluster
 
