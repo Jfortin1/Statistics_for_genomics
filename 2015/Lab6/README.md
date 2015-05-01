@@ -20,7 +20,7 @@ module load samtools
 samtools view -b myfile.sam -o myfile.bam
 ```
 - For homework 3, you were asked to compute the coverage for each chromosome. The coverate can be calculated by counting how many reads you have for each chromosome, multiply by the length of the reads (36) and divide by the length of the chromosome. There are many ways to do that by either using the command line or R. First, let me introduce some useful commands in Unix.
-- `cut` is a command line utility very useful to access columns in a text file. For instance, consider the following file containing three columns and 7 lines: 
+- `cut` is a command line utility very useful to access columns in a text file. For instance, consider the following file `example.txt` containing three columns and 7 lines: 
 ```
 chr1	123123	123124
 chr2	12323	123123
@@ -30,7 +30,27 @@ chr2	12	24
 chr3	133	1212
 chr4	999	1024
 ```
-  
+If you want to grab the second column, you can do:
+```
+cut -f 2 example.txt
+
+123123
+12323
+143123
+12
+12
+133
+999
+```
+Now, if you want to compute how many times each chromsome appears, you can do
+```
+cut -f 1 example.txt | sort | uniq -c
+
+   2 chr1
+   3 chr2
+   1 chr3
+   1 chr4
+```
 
 
 
