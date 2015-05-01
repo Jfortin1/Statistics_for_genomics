@@ -3,7 +3,6 @@
 ## Part 1: Feedback on previous assignments
 
 - For each plot, make sure to label your axes correctly, have a meaningful title, and describe what the plot is supposed to tell us in the caption. 
-- For homework 3, you were asked to compute the coverage for each chromosome. The coverate can be calculated by counting how many reads you have for each chromosome, multiply by the length of the reads (36) and divide by the length of the chromosome. 
 - For trimming reads with Bowtie , one can use the following options as part of the `bowtie` command:
 ```
 --trim3 10 --trim5 10 
@@ -20,7 +19,17 @@ which will save the unaligned reads in the file alignedOutput.fastq.
 module load samtools
 samtools view -b myfile.sam -o myfile.bam
 ```
-
+- For homework 3, you were asked to compute the coverage for each chromosome. The coverate can be calculated by counting how many reads you have for each chromosome, multiply by the length of the reads (36) and divide by the length of the chromosome. There are many ways to do that by either using the command line or R. First, let me introduce some useful commands in Unix.
+- `cut` is a command line utility very useful to access columns in a text file. For instance, consider the following file containing three columns and 7 lines: 
+```
+chr1	123123	123124
+chr2	12323	123123
+chr1	143123	153124
+chr2	12	24
+chr2	12	24
+chr3	133	1212
+chr4	999	1024
+```
   
 
 
