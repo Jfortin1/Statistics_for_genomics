@@ -5,7 +5,6 @@
 - For each plot, make sure to label your axes correctly, have a meaningful title, and describe what the plot is supposed to tell us in the caption. 
 - For homework 3, you were asked to compute the coverage for each chromosome. The coverate can be calculated by counting how many reads you have for each chromosome, multiply by the length of the reads (36) and divide by the length of the chromosome. 
 - For trimming reads with Bowtie , one can use the following options as part of the `bowtie` command:
-
 ```
 --trim3 10 --trim5 10 
 ```
