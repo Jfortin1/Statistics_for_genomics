@@ -13,7 +13,7 @@ which will trims the reads by 10 bps respectively for the 3' and 5' ends.
 ```
 --un unalignedOutput
 ```
-which will save the unaligned reads in the file alignedOutput.fastq.
+which will save the unaligned reads in the file `unalignedOutput.fastq`.
 - While a SAM file is a regular text file, the BAM file is a binary version of the SAM file. One can convert a SAM file to a BAM files by using `samtools` already installed on the cluster:
 ```
 module load samtools
