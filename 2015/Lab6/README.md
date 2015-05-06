@@ -60,18 +60,23 @@ First, the `|` operator (usually refered as "pipe") will use the output of the l
 
 All the login sessions established through the command `screen` won't go away if your connection or local computer crashes. 
 
-Very nice tutorial here: [link](https://kb.iu.edu/d/acuy)
+Tutorial here: [link](https://kb.iu.edu/d/acuy)
 
-Example:
 ```
-screen -S mySession
+screen -S mySession 
 ```
 
 ### Submitting a job
 
-`qdel -u, qstat, qmem, qsub -cwd -V`
-and
-`mem_free,h_vmem_, h_fsize`
+Example:
+```
+qsub -cwd -V -l mem_free=10G,h_vmem=12G,h_fsize=50G
+```
+- `mem_free` specifies the memory requirements 
+- `h_vmem` sets a limit on the virtual memory
+- `h_fsize` hard limit on space on disk.
+
+For instance, when I use `fastq-dump`, I set `h_fsize` very high (100G) because I know in some cases that the output files (`fastq` files) are really big. 
 
 ### Seting up `ssh` keys
 
