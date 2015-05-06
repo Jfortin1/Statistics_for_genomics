@@ -76,11 +76,11 @@ qsub -cwd -V -l mem_free=10G,h_vmem=12G,h_fsize=50G
 - `h_vmem` sets a limit on the virtual memory
 - `h_fsize` hard limit on space on disk.
 
-For instance, when I use `fastq-dump`, I set `h_fsize` very high (100G) because I know in some cases that the output files (`fastq` files) are really big. 
+For instance, when I use `fastq-dump`, I set `h_fsize` very high (100G) when the `fastq` files are huge. 
 
 ### Seting up `ssh` keys
 
-[Click here](https://jhpce.jhu.edu/knowledge-base/authentication/login/)
+`ssh` keys are really useful to avoid entering the password/authentification key every time you start a new cluster session. To set up `ssh` keys, follow the tutorial here: [link](https://jhpce.jhu.edu/knowledge-base/authentication/login/)
 
 ### Permissions
 
