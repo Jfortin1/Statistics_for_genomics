@@ -58,6 +58,11 @@ First, the `|` operator (usually refered as "pipe") will use the output of the l
 
 ### Screen 
 
+All the login sessions established through the command `screen` won't go away if your connection or local computer crashes. 
+
+Very nice tutorial here: [link](https://kb.iu.edu/d/acuy)
+
+Example:
 ```
 screen -S mySession
 ```
