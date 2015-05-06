@@ -68,15 +68,21 @@ screen -S mySession
 
 ### Submitting a job
 
+The command `qsub` allows you to submit a job to the cluster. 
+
 Example:
 ```
-qsub -cwd -V -l mem_free=10G,h_vmem=12G,h_fsize=50G
+qsub -cwd -V -l mem_free=10G,h_vmem=12G,h_fsize=50G myjob.sh
 ```
 - `mem_free` specifies the memory requirements 
 - `h_vmem` sets a limit on the virtual memory
-- `h_fsize` hard limit on space on disk.
+- `h_fsize` hard limit on space on disk. For instance, when I use `fastq-dump`, I set `h_fsize` very high (100G) when the `fastq` files are huge. 
+- `myjob.sh` is the script containing the code to be run
 
-For instance, when I use `fastq-dump`, I set `h_fsize` very high (100G) when the `fastq` files are huge. 
+To monitor your job, you can use the following two commands:
+- `qstat` shows the current status of  the  available queues  and  the  jobs  associated  with the queues.
+- `qmem` to monitor the memory usage of your running jobs
+
 
 ### Seting up `ssh` keys
 
