@@ -1,5 +1,9 @@
 # Lab 6
 
+## Part 0: Whole-Genome Bisulfite Sequencing (WGBS)
+
+Very nice tutorial by Stephanie Hicks: [link](https://github.com/genomicsclass/colonCancerWGBS/blob/master/scripts/createObject.Rmd)
+
 ## Part 1: Feedback on previous assignments
 
 - For each plot, make sure to label your axes correctly, have a meaningful title, and describe what the plot is supposed to tell us in the caption. 
