@@ -100,11 +100,10 @@ To monitor your job, you can use the following two commands:
 
 `ln -s`
 
-## Part 3: Other stuff
+## Part 3: Vectorization
 
-GitHub, Gist, code organization
+Nice post by Alyssa Frazee: [http://alyssafrazee.com/vectorization.html](http://alyssafrazee.com/vectorization.html)
 
-Colors in R 
 
 
 
