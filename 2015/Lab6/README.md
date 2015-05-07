@@ -102,7 +102,11 @@ To monitor your job, you can use the following two commands:
 
 ## Part 3: Vectorization
 
-Nice post by Alyssa Frazee: [http://alyssafrazee.com/vectorization.html](http://alyssafrazee.com/vectorization.html)
+Nice post by Alyssa Frazee: [link](http://alyssafrazee.com/vectorization.html)
+
+## My Gists:
+
+[link](https://gist.github.com/Jfortin1)
 
 
 
