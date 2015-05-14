@@ -1,6 +1,6 @@
 # Lab 7: RNA-Seq analysis
 
-We will follow a lab from HarvardX PH525x Data Analysis for Genomics that can be found  [Here](https://github.com/genomicsclass/labs/blob/master/course5/rnaseq_gene_level.Rmd)
+We will follow a lab from HarvardX PH525x Data Analysis for Genomics that can be found  [here](https://github.com/genomicsclass/labs/blob/master/course5/rnaseq_gene_level.Rmd)
 
 ## Part 1: 
 
